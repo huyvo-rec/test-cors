@@ -16,7 +16,7 @@ function App() {
     const rawResponse = await fetch('https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==', {
       // url: ,
       method: 'POST',
-      mode: 'no-cors',
+      // mode: 'no-cors',
       headers: { "Content-type": "application/json; charset=UTF-8" },
       body: JSON.stringify(data),
     });
