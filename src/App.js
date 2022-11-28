@@ -14,30 +14,31 @@ function App() {
     }
 
     const rawResponse = await fetch('https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==', {
-      // url: ,
       method: 'POST',
-      // mode: 'no-cors',
       headers: { "Content-type": "application/json; charset=UTF-8" },
       body: JSON.stringify(data),
-    });
-    const content = await rawResponse.text();
+    }).then(async (res) => {
+      const result = await fetch(`http://results.ndxcode.tk/predict?blob_url=${res.text()}`, {
+        method: 'GET',
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+      }
+      ).then((data => console.log(data.json())))
+    })
 
-    console.log(content);
 
-
-    //   const res = await axios({
-    //     url: "https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==",
-    //     method: 'POST',
-    //     headers: {
-    //         "Access-Control-Allow-Origin": "*",
-    //         'Content-Type': 'application/json; charset=utf-8',
-    //     },
-    //     withCredentials: false,
-    //     data: JSON.stringify(data),
+    // const res = await axios({
+    //   url: "https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==",
+    //   method: 'POST',
+    //   headers: {
+    //     "Access-Control-Allow-Origin": "*",
+    //     'Content-Type': 'application/json; charset=utf-8',
+    //   },
+    //   withCredentials: false,
+    //   data: JSON.stringify(data),
     // })
     // // document.querySelector("#decoded").innerHTML = text;
     // if (res) {
-    //     console(res?.data)
+    //   console(res?.data)
     // }
 
   }
