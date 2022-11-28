@@ -1,10 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useInsertionEffect, useState } from 'react';
 import axios from 'axios';
 
 function App() {
   const [input, setInput] = useState("");
+  const [blobURL, setBlobURL] = useState("");
+  const [loading, isLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -13,35 +15,55 @@ function App() {
       url: input,
     }
 
-    const rawResponse = await fetch('https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==', {
-      method: 'POST',
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-      body: JSON.stringify(data),
-    }).then(async (res) => {
-      const result = await fetch(`http://model.ndxcode.tk/predict?blob_url=${res.text()}`, {
-        method: 'GET',
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-      }
-      ).then((data => console.log(data.json())))
-    })
+      // fetch('https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==', {
+      //   method: 'POST',
+      //   headers: { "Content-type": "application/json; charset=UTF-8" },
+      //   body: JSON.stringify(data),
+      // }).then((res) => console.log(res.text()))
+      // if (rawResponse.text()) {
+      ;
+    // setBlobURL(rawResponse.text());
+    // const result = await fetch(`http://model.ndxcode.tk/predict?blob_url=${rawResponse.text()}`, {
+    //   method: 'GET',
+    //   headers: { "Content-type": "application/json; charset=UTF-8" }
+    // }
+    // );
 
-
-    // const res = await axios({
-    //   url: "https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==",
-    //   method: 'POST',
-    //   headers: {
-    //     "Access-Control-Allow-Origin": "*",
-    //     'Content-Type': 'application/json; charset=utf-8',
-    //   },
-    //   withCredentials: false,
-    //   data: JSON.stringify(data),
-    // })
-    // // document.querySelector("#decoded").innerHTML = text;
-    // if (res) {
-    //   console(res?.data)
     // }
 
+
+    const res = await axios({
+      url: "https://is402main.azurewebsites.net/api/save-url?code=qnPIJsAIPUFIZfaZ0jiFyD8gIqrrLvrwXc67YXufSNECAzFulHi-FQ==",
+      method: 'POST',
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      withCredentials: false,
+      data: JSON.stringify(data),
+    })
+    if (res) {
+      setBlobURL(res.data);
+    }
   }
+
+  const onPredict = async (e) => {
+    e.preventDefault();
+
+    const res = await axios({
+      url: `http://model.ndxcode.tk/predict?blob_url=${blobURL}`,
+      method: 'GET',
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+    })
+    if (res) {
+      console.log(res?.data)
+    }
+  }
+
+
   return (
     <div className="wrapper">
       <div className="wrapper__welcome">
@@ -60,18 +82,19 @@ function App() {
         <button className="form__button--gradients" onClick={onSubmit}>Submit</button>
 
       </form>
-      <form className="wrapper__form" target="_self" id="formElem1">
-        <div className="form__item">
-          <div className="form__item--input">
-            <input type="text" required name="url" />
-            <label>Link URL</label>
+      {
+        blobURL && blobURL !== "" &&
+        <form className="wrapper__form" target="_self" name="formElem1">
+          <div className="form__item">
+            <div className="form__item--input">
+              <input type="text" required name="blob_url" value={blobURL} readOnly />
+              {/* <label>Link Blob</label> */}
+            </div>
           </div>
+          <button className="form__button--gradients" onClick={onPredict}> Detect Hate Speech</button>
+        </form>
+      }
 
-        </div>
-
-        <button type="submit" className="form__button--gradients"> Detect Hate Speech</button>
-
-      </form>
 
       <table className="wrapper__table">
         {/* <colgroup>
