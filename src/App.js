@@ -20,7 +20,7 @@ function App() {
       headers: { "Content-type": "application/json; charset=UTF-8" },
       body: JSON.stringify(data),
     });
-    const content = await rawResponse.json();
+    const content = await rawResponse.text();
 
     console.log(content);
 
