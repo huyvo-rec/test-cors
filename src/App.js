@@ -18,7 +18,7 @@ function App() {
       headers: { "Content-type": "application/json; charset=UTF-8" },
       body: JSON.stringify(data),
     }).then(async (res) => {
-      const result = await fetch(`http://results.ndxcode.tk/predict?blob_url=${res.text()}`, {
+      const result = await fetch(`http://model.ndxcode.tk/predict?blob_url=${res.text()}`, {
         method: 'GET',
         headers: { "Content-type": "application/json; charset=UTF-8" }
       }
